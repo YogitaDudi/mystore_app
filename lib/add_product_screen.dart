@@ -24,14 +24,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
         category: _categoryController.text,
       );
       final provider = Provider.of<ProductProvider>(context, listen: false);
+
       await provider.addProduct(newProduct);
 
-      print(newProduct.toJson());
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Product added successfully!')),
-      );
-      _formKey.currentState!.reset();
+      if (!provider.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Product added successfully!')),
+        );
+        _formKey.currentState!.reset();
+      }
     }
   }
 
@@ -41,11 +42,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
       appBar: AppBar(
         title: Text('Add Product'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-            children: [
-              Form(
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
               key: _formKey,
               child: SingleChildScrollView(
                 child: Column(
@@ -104,18 +105,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ),
             ),
-              Consumer<ProductProvider>(builder: (context, provider, child) {
-                if (provider.isLoading) {
-                  CircularProgressIndicator();
-                } else {
-                  return SizedBox();
-                }
+          ),
+          Consumer<ProductProvider>(
+            builder: (context, provider, child) {
+              if (provider.isLoading) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
               }
-              )
-            ]
-        ),
+              return SizedBox();
+            },
+          ),
+        ],
       ),
     );
   }
 }
-

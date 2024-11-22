@@ -3,6 +3,7 @@ import 'package:mystore/auth/dashborad/provider/dashborad_provider.dart';
 import 'package:mystore/auth/product/provider/product_provider.dart';
 import 'package:mystore/auth/product/service/Product_service.dart';
 import 'package:mystore/auth/provider/auth_provider.dart';
+import 'package:mystore/auth/provider/splash_provider.dart';
 import 'package:mystore/auth/service/auth_service.dart';
 import 'package:mystore/auth/view/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context){
           return DashboardProvider();}),
         ChangeNotifierProvider(create: (context){
-          return ProductProvider(ProductService());}),
+          return ProductProvider(ProductService());
+        }
+        ),
+        ChangeNotifierProvider(create: (context){
+          return SplashProvider();
+        }
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
